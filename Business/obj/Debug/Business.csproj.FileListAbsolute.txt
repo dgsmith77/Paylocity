@@ -1,0 +1,9 @@
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Business.dll
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Business.pdb
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Models.dll
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Repository.dll
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Models.pdb
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\bin\Debug\Repository.pdb
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\obj\Debug\Business.csprojResolveAssemblyReference.cache
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\obj\Debug\Business.dll
+C:\Users\Daniel\documents\visual studio 2013\Projects\Paylocity\Business\obj\Debug\Business.pdb

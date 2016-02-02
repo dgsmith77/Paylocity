@@ -1,0 +1,45 @@
+﻿@using PaylocityWeb.ViewModels
+@model EmpDetailsViewModel
+
+<h3><strong>@Model.employee.LastName, @Model.employee.FirstName</strong></h3>
+<table cellpadding="3">
+    <tr>
+        <th>
+            <strong>Name</strong>
+        </th>
+        <th>
+            <strong>Relation</strong>
+        </th>
+        <th>
+            <strong class="no-wrap">Yearly Cost</strong>
+        </th>
+    </tr>
+    <tr>
+        <td class="thin-borders">@Model.employee.FirstName</td>
+        <td class="thin-borders">Self</td>
+        <td class="thin-borders">@string.Format("{0:C}", Model.employee.BenefitCost)</td>
+    </tr>
+    @foreach (var dep in Model.dependents)
+    {
+        <tr>
+            <td class="thin-borders">@dep.Name</td>
+            <td class="thin-borders">@dep.Type</td>
+            <td class="thin-borders">@string.Format("{0:C}", dep.BenefitCost)</td>
+        </tr>
+    }
+</table>
+<br />
+<table cellpadding="4">
+    <tr>
+        <td>Bi-Weekly Pay</td>
+        <td class="align-right">@string.Format("{0:C}",Model.employee.Salary)</td>
+    </tr>
+    <tr>
+        <td class="border-bottom">Bi-Weekly Benefit Costs</td>
+        <td class="align-right border-bottom">@string.Format("{0:C}", Model.PayrollDeduction)</td>
+    </tr>
+    <tr>
+        <td>After benefit deduction</td>
+        <td class="align-right">@string.Format("{0:C}", Model.PayAfterBenefitDeduction)</td>
+    </tr>
+</table>

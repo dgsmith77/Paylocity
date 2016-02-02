@@ -1,0 +1,115 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: lightgrey;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 10px;
+    background-color: white;
+    min-height: 650px;
+    border: 2px solid gray;
+    border-radius: 6px;
+    margin-top: 4px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.panel {
+    margin-bottom: 0px;
+}
+
+textarea.wide {
+    max-width: 420px;
+}
+
+.no-wrap {
+    white-space: nowrap;
+}
+
+.red-text {
+    color: red;
+}
+
+.hidden {
+    visibility: hidden;
+}
+
+.hidden-msg {
+    display: none;
+}
+
+.msg {
+    font-weight: bold;
+    color: red;
+}
+
+.display-msg {
+    display: block;
+}
+
+.visible {
+    visibility: visible;
+}
+
+.action-link-modal {
+    font-size: smaller;
+}
+
+.fa-plus-circle {
+    color: green;
+    cursor: pointer;
+}
+
+.fa-remove {
+    color: red;
+    cursor: pointer;
+}
+
+.fa-info-circle {
+    color: navy;
+    cursor: pointer;
+}
+
+h4,
+h5 {
+    white-space: nowrap;
+}
+
+td.thin-borders {
+    width: 100px;
+    white-space: nowrap;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    border-left: 1px solid black;
+}
+
+td.align-right {
+    text-align: right;
+}
+
+td.border-bottom {
+    border-bottom: 1px solid black;
+}

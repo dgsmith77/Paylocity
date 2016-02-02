@@ -1,0 +1,69 @@
+﻿@using PaylocityWeb.ViewModels
+@model EmpDetailsViewModel
+
+@Styles.Render("~/Content/css")
+@Styles.Render("~/Content/themes/base/css")
+<form id="EmpForm">
+    <div class="col-md-10">
+        <div id="errorMsg" class="hidden"><strong>There was an error adding the employee</strong></div>
+        <div class="panel">
+            <div class="panel-body">
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <h5><strong>@Html.LabelFor(model => model.employee.FirstName)</strong></h5>
+                    </div>
+                    <div class="col-md-2 no-wrap red-text">
+                        @Html.TextBoxFor(model => model.employee.FirstName)<br />
+                        @Html.ValidationMessageFor(model => model.employee.FirstName)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <h5><strong>@Html.LabelFor(model => model.employee.LastName)</strong></h5>
+                    </div>
+                    <div class="col-md-2 no-wrap red-text">
+                        @Html.TextBoxFor(model => model.employee.LastName)<br />
+                        @Html.ValidationMessageFor(model => model.employee.LastName)
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-2">
+                        <table cellpadding="3">
+                            <tbody id="dependents">
+                                <tr><th><i class="fa fa-plus-circle fa-lg"></i></th><th colspan="2"><strong>@Html.LabelFor(model => model.dependents)</strong></th></tr>
+                                <tr id="rowErrorMsg" class="hidden"><td class="msg" colspan="3">You can't remove the initial row</td></tr>
+                                <tr><th></th><th>Name</th><th style="white-space:nowrap;">Dependent Type</th></tr>
+                                <tr id="row0">
+                                    <td>
+                                        <i class="fa fa-remove fa-lg"></i>
+                                    </td>
+                                    <td>
+                                        <input type="text" name="dependents[0].Name" />
+                                    </td>
+                                    <td>
+                                        <select name="dependents[0].Type">
+                                            <option value="Spouse">Spouse</option>
+                                            <option value="Child">Child</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 no-wrap">
+                        <button class="btn-lg btn-success no-wrap" id="AddEmpButton">Add Employee</button>
+                    </div>
+                    <div id="loading" class="col-md-3 no-wrap hidden">
+                        <img src="~/Images/loading.gif" />&nbsp;<strong>Adding employee...</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/jqueryui")
+@Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/Paylocity")
