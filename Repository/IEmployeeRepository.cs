@@ -52,7 +52,7 @@ namespace Repository
         /// <summary>
         /// retrieves a dependent by their id
         /// </summary>
-        /// <param name="anEmployeeId">the id of the dependent</param>
+        /// <param name="aDependentId">the id of the dependent</param>
         /// <returns>a dependent</returns>
         Dependent GetDependentById(int aDependentId);
     }
