@@ -20,8 +20,8 @@ namespace PaylocityWeb.ViewModels
 
         public List<Dependent> dependents { get; set; }
 
-        public double PayrollDeduction { get; set; }
+        public decimal PayrollDeduction { get; set; }
 
-        public double PayAfterBenefitDeduction { get; set; }
+        public decimal PayAfterBenefitDeduction { get; set; }
     }
 }

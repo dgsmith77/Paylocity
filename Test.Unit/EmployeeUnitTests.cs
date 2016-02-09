@@ -24,14 +24,14 @@ namespace Test.Unit
         IEmployeeRepository empRepo;
         EmployeeCalculations empCalcs;
 
-        private const double expectedEmpDeduction = 1000.0;
-        private const double expectedEmpDiscountedDeduction = 900.0;
-        private const double expectedDepDeduction = 500.0;
-        private const double expectedDepDiscountedDeduction = 450.0;
+        private const decimal expectedEmpDeduction = 1000;
+        private const decimal expectedEmpDiscountedDeduction = 900;
+        private const decimal expectedDepDeduction = 500;
+        private const decimal expectedDepDiscountedDeduction = 450;
 
         // John = 1000, Abigail = 450, Aaron = 450, Sarah = 500
         // 2400 / 26 pay periods = 92.31
-        private const double expectedPayrollDeduction = 92.31;
+        private const decimal expectedPayrollDeduction = 92.31m;
 
         [TestInitialize]
         public void TestInitialize()
@@ -47,7 +47,7 @@ namespace Test.Unit
             Employee emp = empRepo.GetEmployeeById(1); // John
 
             // act
-            double actualEmpDeduction = empCalcs.CalculateEmpCost(emp);
+            decimal actualEmpDeduction = empCalcs.CalculateEmpCost(emp);
 
             // assert
             Assert.AreEqual(expectedEmpDeduction, actualEmpDeduction);
@@ -60,7 +60,7 @@ namespace Test.Unit
             Employee emp = empRepo.GetEmployeeById(2); // Angela
 
             // act
-            double actualEmpDiscountedDeduction = empCalcs.CalculateEmpCost(emp);
+            decimal actualEmpDiscountedDeduction = empCalcs.CalculateEmpCost(emp);
 
             // assert
             Assert.AreEqual(expectedEmpDiscountedDeduction, actualEmpDiscountedDeduction);
@@ -73,7 +73,7 @@ namespace Test.Unit
             Dependent dep = empRepo.GetDependentById(3); // Sarah
 
             // act
-            double actualDepDeduction = empCalcs.CalculateDependentCost(dep);
+            decimal actualDepDeduction = empCalcs.CalculateDependentCost(dep);
 
             // assert
             Assert.AreEqual(expectedDepDeduction, actualDepDeduction);
@@ -86,7 +86,7 @@ namespace Test.Unit
             Dependent dep = empRepo.GetDependentById(1); // Abigail
 
             // act
-            double actualDepDiscountedDeduction = empCalcs.CalculateDependentCost(dep);
+            decimal actualDepDiscountedDeduction = empCalcs.CalculateDependentCost(dep);
 
             // assert
             Assert.AreEqual(expectedDepDiscountedDeduction, actualDepDiscountedDeduction);
@@ -99,7 +99,7 @@ namespace Test.Unit
             Employee emp = empRepo.GetEmployeeById(1); // John
 
             // act
-            double actualPayrollDeduction = Math.Round(empCalcs.CalculateEmpDeductions(emp), 2);
+            decimal actualPayrollDeduction = Math.Round(empCalcs.CalculateEmpDeductions(emp), 2);
 
             // assert
             Assert.AreEqual(expectedPayrollDeduction, actualPayrollDeduction);

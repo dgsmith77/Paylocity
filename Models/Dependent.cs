@@ -23,6 +23,6 @@ namespace Models
 
         public string Type { get; set; }
 
-        public double BenefitCost { get; set; }
+        public decimal BenefitCost { get; set; }
     }
 }

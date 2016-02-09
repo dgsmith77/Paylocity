@@ -82,10 +82,11 @@ namespace Repository
         /// adds an employee to the list
         /// </summary>
         /// <param name="anEmployee">the employee to insert</param>
-        public void AddEmployee(Employee anEmployee)
+        /// <param name="aListOfDependents">a list of the employee's dependents</param>
+        public void AddEmployee(Employee anEmployee, List<Dependent> aListOfDependents)
         {
             anEmployee.EmployeeId = employees.Count + 1;
-            anEmployee.Salary = double.Parse(configRepo.GetConfigItem("Salary"));
+            anEmployee.Salary = decimal.Parse(configRepo.GetConfigItem("Salary"));
             employees.Add(anEmployee);
         }
 

@@ -30,13 +30,13 @@ namespace Models
         [DisplayName("Last Name")]
         public string LastName { get; set; }
 
-        public double Salary { get; set; }
+        public decimal Salary { get; set; }
 
         // dependent ids
         [DisplayName("Dependents")]
         public List<int> Dependents { get; set; }
 
-        public double BenefitCost { get; set; }
+        public decimal BenefitCost { get; set; }
 
         public Employee()
         {

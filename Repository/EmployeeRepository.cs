@@ -41,7 +41,8 @@ namespace Repository
         /// adds an employee the database
         /// </summary>
         /// <param name="anEmployee">the employee to add</param>
-        public void AddEmployee(Employee anEmployee)
+        /// <param name="aListOfDependents">a list of the employee's dependents</param>
+        public void AddEmployee(Employee anEmployee, List<Dependent> aListOfDependents)
         {
             // TODO: implement this when DB is in place
         }

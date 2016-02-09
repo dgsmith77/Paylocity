@@ -33,7 +33,8 @@ namespace Repository
         /// adds an employee to the database
         /// </summary>
         /// <param name="anEmployee">the employee to add</param>
-        void AddEmployee(Employee anEmployee);
+        /// <param name="aListOfDependents">a list of the employees dependents</param>
+        void AddEmployee(Employee anEmployee, List<Dependent> aListOfDependents);
 
         /// <summary>
         /// adds a dependent to the database

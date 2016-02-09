@@ -33,15 +33,15 @@
                                 <tr><th><i class="fa fa-plus-circle fa-lg"></i></th><th colspan="2"><strong>@Html.LabelFor(model => model.dependents)</strong></th></tr>
                                 <tr id="rowErrorMsg" class="hidden"><td class="msg" colspan="3">You can't remove the initial row</td></tr>
                                 <tr><th></th><th>Name</th><th style="white-space:nowrap;">Dependent Type</th></tr>
-                                <tr id="row0">
+                                <tr id="row0" class="dep-row">
                                     <td>
                                         <i class="fa fa-remove fa-lg"></i>
                                     </td>
                                     <td>
-                                        <input type="text" name="dependents[0].Name" />
+                                        <input type="text" name="dependents[0].Name" class="dep-name" />
                                     </td>
                                     <td>
-                                        <select name="dependents[0].Type">
+                                        <select name="dependents[0].Type" class="dep-type">
                                             <option value="Spouse">Spouse</option>
                                             <option value="Child">Child</option>
                                         </select>
@@ -63,6 +63,14 @@
         </div>
     </div>
 </form>
+<script>
+    // need this so the remove row function works with dynamically added rows. because it is a document
+    // function, when included in the _layout.cshtml caused the function to be called twice. I only need
+    // it for this partial view.
+    $(document).on('click', '.fa-remove', function () {
+        Paylocity.empFunctions.removeDependentRow($(this).closest('tr').attr('id'));
+    });
+</script>
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryui")
 @Scripts.Render("~/bundles/jqueryval")

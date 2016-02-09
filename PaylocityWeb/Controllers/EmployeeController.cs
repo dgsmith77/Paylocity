@@ -20,7 +20,16 @@ namespace PaylocityWeb.Controllers
 {
     public class EmployeeController : Controller
     {
-        IEmployeeRepository repository = new MockEmployeeRepository();
+        IEmployeeRepository repository;
+
+        public EmployeeController()
+        {
+            repository = new MockEmployeeRepository();
+        }
+        public EmployeeController(IEmployeeRepository anEmpRepository)
+        {
+            repository = anEmpRepository;
+        }
 
         public ActionResult Index()
         {
@@ -47,23 +56,8 @@ namespace PaylocityWeb.Controllers
         [HttpPost]
         public void AddEmployee(EmpDetailsViewModel anEmpDetails)
         {
-            IEmployeeRepository empRepo = new MockEmployeeRepository();
-            EmployeeCalculations empCalcs = new EmployeeCalculations(empRepo);
-            if (anEmpDetails.dependents != null)
-            {
-                foreach (var dependent in anEmpDetails.dependents)
-                {
-                    if (!string.IsNullOrWhiteSpace(dependent.Name))
-                    {
-                        dependent.BenefitCost = empCalcs.CalculateDependentCost(dependent);
-                        int id = repository.AddDependent(dependent);
-                        anEmpDetails.employee.Dependents.Add(id);
-                    }
-                }
-            }
-            anEmpDetails.employee.BenefitCost = empCalcs.CalculateEmpCost(anEmpDetails.employee);
-            repository.AddEmployee(anEmpDetails.employee);
-            anEmpDetails.PayrollDeduction = empCalcs.CalculateEmpDeductions(anEmpDetails.employee);
+            EmployeeCalculations empCalcs = new EmployeeCalculations(repository);
+            repository.AddEmployee(anEmpDetails.employee, anEmpDetails.dependents);
         }
 
         /// <summary>
@@ -78,9 +72,14 @@ namespace PaylocityWeb.Controllers
             EmployeeCalculations empCalcs = new EmployeeCalculations(empRepo);
             EmpDetailsViewModel empDetails = new EmpDetailsViewModel();
             empDetails.employee = repository.GetEmployeeById(anEmployeeId);
+            empDetails.employee.BenefitCost = empCalcs.CalculateEmpCost(empDetails.employee);
             empDetails.dependents = repository.GetDependents(anEmployeeId);
+            foreach (var dependent in empDetails.dependents)
+            {
+                dependent.BenefitCost = empCalcs.CalculateDependentCost(dependent);
+            }
             empDetails.PayrollDeduction = empCalcs.CalculateEmpDeductions(empDetails.employee);
-            empDetails.PayAfterBenefitDeduction = empDetails.employee.Salary - empDetails.PayrollDeduction;
+            empDetails.PayAfterBenefitDeduction = empCalcs.CalculatePayAfterBenefitDeduction(empDetails.employee);
 
             return PartialView("_Details", empDetails);
         }

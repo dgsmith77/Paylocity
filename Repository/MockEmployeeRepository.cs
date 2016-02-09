@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models;
 
+
 namespace Repository
 {
     public class MockEmployeeRepository : IEmployeeRepository
@@ -50,10 +51,22 @@ namespace Repository
         /// adds an employee to the list
         /// </summary>
         /// <param name="anEmployee">the employee to insert</param>
-        public void AddEmployee(Employee anEmployee)
+        /// <param name="aListOfDependents">a list of the employee's dependents</param>
+        public void AddEmployee(Employee anEmployee, List<Dependent> aListOfDependents)
         {
+            if (aListOfDependents != null)
+            {
+                foreach (var dependent in aListOfDependents)
+                {
+                    if (!string.IsNullOrWhiteSpace(dependent.Name))
+                    {
+                        int id = AddDependent(dependent);
+                        anEmployee.Dependents.Add(id);
+                    }
+                }
+            }
             anEmployee.EmployeeId = MockData.employees.Count + 1;
-            anEmployee.Salary = double.Parse(configRepo.GetConfigItem("Salary"));
+            anEmployee.Salary = decimal.Parse(configRepo.GetConfigItem("Salary"));
             MockData.employees.Add(anEmployee);
         }
 

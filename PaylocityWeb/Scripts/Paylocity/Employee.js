@@ -26,10 +26,6 @@ $(document).ready(function () {
         Paylocity.empFunctions.addDependentRow();
     });
 
-    $(document).on('click', '.fa-remove', function () {
-        Paylocity.empFunctions.removeDependentRow($(this).closest('tr').attr('id'));
-    });
-
     $('.action-link-modal').on('click', function (e) {
         Paylocity.empFunctions.openAddDialog(e);
     });
@@ -88,10 +84,28 @@ Paylocity.empFunctions = (function ($) {
     removeDependentRow = function (id) {
         if (id !== 'row0') {
             $('#' + id).remove();
+            renumberDependentRows();
         }
         else {
             $('#rowErrorMsg').removeClass('hidden');
         }
+    },
+    renumberDependentRows = function () {
+        $('.dep-row').each(function (i, obj) {
+            if (i != 0) {
+                $(this).attr('id', 'row' + i);
+            }
+        });
+        $('.dep-name').each(function (i, obj) {
+            if (i != 0) {
+                $(this).attr('name', 'dependents[' + i + '].Name');
+            }
+        });
+        $('.dep-type').each(function (i, obj) {
+            if (i != 0) {
+                $(this).attr('name', 'dependents[' + i + '].Type');
+            }
+        });
     },
     openAddDialog = function (e) {
         e.preventDefault();
@@ -112,6 +126,7 @@ Paylocity.empFunctions = (function ($) {
         getEmpDetails: getEmpDetails,
         addDependentRow: addDependentRow,
         removeDependentRow: removeDependentRow,
+        renumberDependentRows:renumberDependentRows,
         openAddDialog: openAddDialog
     };
 })(jQuery);

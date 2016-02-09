@@ -35,16 +35,16 @@ namespace Business
         /// </summary>
         /// <param name="anEmployee">an employee</param>
         /// <returns>pay period deduction</returns>
-        public double CalculateEmpDeductions(Employee anEmployee)
+        public decimal CalculateEmpDeductions(Employee anEmployee)
         {
             // employee benefit cost
-            double EmpCost = CalculateEmpCost(anEmployee);
+            decimal EmpCost = CalculateEmpCost(anEmployee);
 
             // dependent benefit cost
-            double DepCost = CalculateAllDependentCost(anEmployee);
+            decimal DepCost = CalculateAllDependentCost(anEmployee);
 
             // calculate deduction per pay period
-            double Deduction = (EmpCost + DepCost) / configItems.PayPeriods;
+            decimal Deduction = (EmpCost + DepCost) / configItems.PayPeriods;
 
             return Deduction;
         }
@@ -54,7 +54,7 @@ namespace Business
         /// </summary>
         /// <param name="aDependent">a dependent</param>
         /// <returns>cost of dependent</returns>
-        public double CalculateDependentCost(Dependent aDependent)
+        public decimal CalculateDependentCost(Dependent aDependent)
         {
             return aDependent.Name.StartsWith(configItems.AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
                 configItems.DependentCost - (configItems.DependentCost * configItems.Discount) :
@@ -66,27 +66,36 @@ namespace Business
         /// </summary>
         /// <param name="anEmployee">an employee</param>
         /// <returns>cost of employee</returns>
-        public double CalculateEmpCost(Employee anEmployee)
+        public decimal CalculateEmpCost(Employee anEmployee)
         {
             return anEmployee.FirstName.StartsWith(configItems.AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
                 configItems.YearlyCost - (configItems.YearlyCost * configItems.Discount) :
                 configItems.YearlyCost;
         }
 
+        /// <summary>
+        /// Method to calculate pay after benefit deduction
+        /// </summary>
+        /// <param name="anEmployee">an employee</param>
+        /// <returns>pay after benefit deduction</returns>
+        public decimal CalculatePayAfterBenefitDeduction(Employee anEmployee)
+        {
+            return anEmployee.Salary - CalculateEmpDeductions(anEmployee);
+        }
 
         /// <summary>
         /// Method to calculate the yearly benefit cost of all dependents
         /// </summary>
         /// <param name="anEmployee"></param>
         /// <returns></returns>
-        private double CalculateAllDependentCost(Employee anEmployee)
+        private decimal CalculateAllDependentCost(Employee anEmployee)
         {
             // get number of dependents
             int DependentCount = anEmployee.Dependents.Count;
 
             if (DependentCount == 0)
             {
-                return 0.0;
+                return 0;
             }
 
             // dependents that are eligible for discount
