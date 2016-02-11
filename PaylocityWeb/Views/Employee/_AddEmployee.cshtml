@@ -65,7 +65,7 @@
 </form>
 <script>
     // need this so the remove row function works with dynamically added rows. because it is a document
-    // function, when included in the _layout.cshtml caused the function to be called twice. I only need
+    // function, when included in the _layout.cshtml, it caused the function to be called twice. I only need
     // it for this partial view.
     $(document).on('click', '.fa-remove', function () {
         Paylocity.empFunctions.removeDependentRow($(this).closest('tr').attr('id'));

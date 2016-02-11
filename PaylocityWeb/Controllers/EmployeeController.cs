@@ -8,6 +8,8 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Moved all business logic to the Business project
+// *                        Added constructors
 // *******************************************************************
 using System.Collections.Generic;
 using System.Web.Mvc;
@@ -20,20 +22,23 @@ namespace PaylocityWeb.Controllers
 {
     public class EmployeeController : Controller
     {
-        IEmployeeRepository repository;
+        private IEmployeeRepository empRepo;
+        private IConfigItemRepository configRepo;
 
         public EmployeeController()
         {
-            repository = new MockEmployeeRepository();
+            empRepo = new MockEmployeeRepository();
+            configRepo = new MockConfigItemsRepository();
         }
-        public EmployeeController(IEmployeeRepository anEmpRepository)
+        public EmployeeController(IEmployeeRepository anEmpRepository, IConfigItemRepository aConfigRepository)
         {
-            repository = anEmpRepository;
+            empRepo = anEmpRepository;
+            configRepo = aConfigRepository;
         }
 
         public ActionResult Index()
         {
-            List<Employee> employees = repository.GetAllEmployees();
+            List<Employee> employees = empRepo.GetAllEmployees();
             return View(employees);
         }
 
@@ -56,8 +61,8 @@ namespace PaylocityWeb.Controllers
         [HttpPost]
         public void AddEmployee(EmpDetailsViewModel anEmpDetails)
         {
-            EmployeeCalculations empCalcs = new EmployeeCalculations(repository);
-            repository.AddEmployee(anEmpDetails.employee, anEmpDetails.dependents);
+            EmployeeCalculations empCalcs = new EmployeeCalculations(empRepo, configRepo);
+            empRepo.AddEmployee(anEmpDetails.employee, anEmpDetails.dependents);
         }
 
         /// <summary>
@@ -68,12 +73,11 @@ namespace PaylocityWeb.Controllers
         [HttpGet]
         public ActionResult GetDetails(int anEmployeeId)
         {
-            IEmployeeRepository empRepo = new MockEmployeeRepository();
-            EmployeeCalculations empCalcs = new EmployeeCalculations(empRepo);
+            EmployeeCalculations empCalcs = new EmployeeCalculations(empRepo, configRepo);
             EmpDetailsViewModel empDetails = new EmpDetailsViewModel();
-            empDetails.employee = repository.GetEmployeeById(anEmployeeId);
+            empDetails.employee = empRepo.GetEmployeeById(anEmployeeId);
             empDetails.employee.BenefitCost = empCalcs.CalculateEmpCost(empDetails.employee);
-            empDetails.dependents = repository.GetDependents(anEmployeeId);
+            empDetails.dependents = empRepo.GetDependents(anEmployeeId);
             foreach (var dependent in empDetails.dependents)
             {
                 dependent.BenefitCost = empCalcs.CalculateDependentCost(dependent);

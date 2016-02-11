@@ -8,6 +8,8 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Added config repository to the constructor
+// *                        Changed all doubles to decimals
 // *******************************************************************
 using System;
 using System.Linq;
@@ -20,15 +22,40 @@ namespace Business
     public class EmployeeCalculations
     {
         // employee repository
-        IEmployeeRepository repository;
-        
-        public EmployeeCalculations(IEmployeeRepository anEmpRepository)
-        {
-            repository = anEmpRepository;
-        }
+        private IEmployeeRepository empRepo;
+        // config repository
+        private IConfigItemRepository configRepo;
 
-        // config items
-        ConfigItems configItems = new ConfigItems();
+        // constants - keys for config repository
+        private const string PAY_PERIODS = "PayPeriods";
+        private const string YEARLY_COST = "YearlyCost";
+        private const string DEPENDENT_COST = "DependentCost";
+        private const string AVAILABLE_DISCOUNT = "AvailableDiscount";
+        private const string DISCOUNT = "Discount";
+
+        // config variables
+        private int PayPeriods;
+        private decimal YearlyCost;
+        private decimal DependentCost;
+        private string AvailableDiscount;
+        private decimal Discount;
+        
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="anEmpRepository">a class that implements the IEmployeeRepository interface</param>
+        /// <param name="aConfigRepository">a class that implements the IConfigItemRepository interface</param>
+        public EmployeeCalculations(IEmployeeRepository anEmpRepository, IConfigItemRepository aConfigRepository)
+        {
+            empRepo = anEmpRepository;
+            configRepo = aConfigRepository;
+            // set all config items
+            PayPeriods = Int32.Parse(configRepo.GetConfigItem(PAY_PERIODS));
+            YearlyCost = decimal.Parse(configRepo.GetConfigItem(YEARLY_COST));
+            DependentCost = decimal.Parse(configRepo.GetConfigItem(DEPENDENT_COST));
+            AvailableDiscount = configRepo.GetConfigItem(AVAILABLE_DISCOUNT);
+            Discount = decimal.Parse(configRepo.GetConfigItem(DISCOUNT));
+        }
  
         /// <summary>
         /// Method to calculate the per period payroll deductions
@@ -44,7 +71,7 @@ namespace Business
             decimal DepCost = CalculateAllDependentCost(anEmployee);
 
             // calculate deduction per pay period
-            decimal Deduction = (EmpCost + DepCost) / configItems.PayPeriods;
+            decimal Deduction = (EmpCost + DepCost) / PayPeriods;
 
             return Deduction;
         }
@@ -56,9 +83,9 @@ namespace Business
         /// <returns>cost of dependent</returns>
         public decimal CalculateDependentCost(Dependent aDependent)
         {
-            return aDependent.Name.StartsWith(configItems.AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
-                configItems.DependentCost - (configItems.DependentCost * configItems.Discount) :
-                configItems.DependentCost;
+            return aDependent.Name.StartsWith(AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
+                DependentCost - (DependentCost * Discount) :
+                DependentCost;
         }
 
         /// <summary>
@@ -68,9 +95,9 @@ namespace Business
         /// <returns>cost of employee</returns>
         public decimal CalculateEmpCost(Employee anEmployee)
         {
-            return anEmployee.FirstName.StartsWith(configItems.AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
-                configItems.YearlyCost - (configItems.YearlyCost * configItems.Discount) :
-                configItems.YearlyCost;
+            return anEmployee.FirstName.StartsWith(AvailableDiscount, StringComparison.CurrentCultureIgnoreCase) ?
+                YearlyCost - (YearlyCost * Discount) :
+                YearlyCost;
         }
 
         /// <summary>
@@ -99,11 +126,11 @@ namespace Business
             }
 
             // dependents that are eligible for discount
-            List<Dependent> dependents = repository.GetDependents(anEmployee.EmployeeId);
-            int DependentDiscount = dependents.Where(d => d.Name.StartsWith(configItems.AvailableDiscount, StringComparison.CurrentCultureIgnoreCase)).Count();
+            List<Dependent> dependents = empRepo.GetDependents(anEmployee.EmployeeId);
+            int DependentDiscount = dependents.Where(d => d.Name.StartsWith(AvailableDiscount, StringComparison.CurrentCultureIgnoreCase)).Count();
 
             // dependent benefit cost
-            return DependentCount * configItems.DependentCost - (DependentDiscount * configItems.Discount * configItems.DependentCost);
+            return DependentCount * DependentCost - (DependentDiscount * Discount * DependentCost);
         }
     }
 }

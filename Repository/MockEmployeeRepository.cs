@@ -8,11 +8,12 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     tweaked some of the linq statements
+// *                        Changed all doubles to decimals
 // *******************************************************************
 using System.Collections.Generic;
 using System.Linq;
 using Models;
-
 
 namespace Repository
 {
@@ -25,7 +26,7 @@ namespace Repository
             public static List<Dependent> dependents = new List<Dependent>();
         }
 
-        IConfigItemRepository configRepo = new MockConfigItemsRepository();
+        private IConfigItemRepository configRepo = new MockConfigItemsRepository();
 
         /// <summary>
         /// retrieves all employees
@@ -42,7 +43,7 @@ namespace Repository
             List<Dependent> empDependents = new List<Dependent>();
             foreach (int id in employee.Dependents)
             {
-                empDependents.Add(MockData.dependents.Where(d => d.DependentId.Equals(id)).FirstOrDefault());
+                empDependents.Add(MockData.dependents.Where(d => d.DependentId == id).FirstOrDefault());
             }
             return empDependents;
         }
@@ -88,7 +89,7 @@ namespace Repository
         /// <returns>an employee</returns>
         public Employee GetEmployeeById(int anEmployeeId)
         {
-            Employee employee = MockData.employees.Find(x => x.EmployeeId.Equals(anEmployeeId));
+            Employee employee = MockData.employees.Where(x => x.EmployeeId == anEmployeeId).FirstOrDefault();
             return employee ?? new Employee();
         }
 
@@ -99,7 +100,7 @@ namespace Repository
         /// <returns>a dependent</returns>
         public Dependent GetDependentById(int aDependentId)
         {
-            Dependent dependent = MockData.dependents.Find(x => x.DependentId.Equals(aDependentId));
+            Dependent dependent = MockData.dependents.Where(x => x.DependentId == aDependentId).FirstOrDefault();
             return dependent;
         }
     }

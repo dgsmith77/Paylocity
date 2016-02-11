@@ -8,6 +8,7 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Changed BenefitCost to a decimal
 // *******************************************************************
 
 namespace Models

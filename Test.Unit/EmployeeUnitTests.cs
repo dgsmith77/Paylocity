@@ -8,21 +8,23 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Added config repository
+// *                        Changed all doubles to decimals
 // *******************************************************************
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Business;
 using Models;
 using Repository;
-using System.Collections.Generic;
 
 namespace Test.Unit
 {
     [TestClass]
     public class EmployeeUnitTests
     {
-        IEmployeeRepository empRepo;
-        EmployeeCalculations empCalcs;
+        private IEmployeeRepository empRepo;
+        private IConfigItemRepository configRepo;
+        private EmployeeCalculations empCalcs;
 
         private const decimal expectedEmpDeduction = 1000;
         private const decimal expectedEmpDiscountedDeduction = 900;
@@ -37,7 +39,8 @@ namespace Test.Unit
         public void TestInitialize()
         {
             empRepo = new TestEmployeeRepository();
-            empCalcs = new EmployeeCalculations(empRepo);
+            configRepo = new MockConfigItemsRepository();
+            empCalcs = new EmployeeCalculations(empRepo, configRepo);
         }
 
         [TestMethod]

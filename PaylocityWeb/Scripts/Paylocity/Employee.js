@@ -8,6 +8,8 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Added renumberDependentRows so new dependent rows are properly tracked 
+// *                        and rolled up to the controller on the serialize() call in addEmp.
 // *******************************************************************
 
 var Paylocity = Paylocity || {};
@@ -84,7 +86,7 @@ Paylocity.empFunctions = (function ($) {
     removeDependentRow = function (id) {
         if (id !== 'row0') {
             $('#' + id).remove();
-            renumberDependentRows();
+            renumberDependentRows(); // bug fix: when a row was removed from the middle, the rows after it were not found
         }
         else {
             $('#rowErrorMsg').removeClass('hidden');

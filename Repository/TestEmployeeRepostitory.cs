@@ -8,6 +8,7 @@
 // * SOFTWARE HISTORY:
 // * DATE        DEVELOPER  DESCRIPTION
 // * 01/30/2016  dsmith     Initial revision
+// * 02/10/2016  dsmith     Changed all doubles to decimals
 // *******************************************************************
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace Repository
 {
     public class TestEmployeeRepository : IEmployeeRepository
     {
+        // config repository
+        private IConfigItemRepository configRepo = new MockConfigItemsRepository();
+
         // test data
         public List<Employee> employees = new List<Employee>
         {
@@ -55,8 +59,6 @@ namespace Repository
                 Type="Child"
             }
         };
-
-        IConfigItemRepository configRepo = new MockConfigItemsRepository();
 
         /// <summary>
         /// retrieves all employees
@@ -108,7 +110,7 @@ namespace Repository
         /// <returns>an employee</returns>
         public Employee GetEmployeeById(int anEmployeeId)
         {
-            Employee employee = employees.Find(x => x.EmployeeId.Equals(anEmployeeId));
+            Employee employee = employees.Where(x => x.EmployeeId == anEmployeeId).FirstOrDefault();                          
             return employee ?? new Employee();
         }
 
@@ -119,7 +121,7 @@ namespace Repository
         /// <returns>a dependent</returns>
         public Dependent GetDependentById(int aDependentId)
         {
-            Dependent dependent = dependents.Find(x => x.DependentId.Equals(aDependentId));
+            Dependent dependent = dependents.Where(x => x.DependentId == aDependentId).FirstOrDefault();
             return dependent;
         }
     }
